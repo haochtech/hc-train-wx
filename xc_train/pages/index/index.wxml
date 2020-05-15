@@ -1,0 +1,86 @@
+<import src="../common/common.wxml"></import>
+<view class="page">
+    <swiper autoplay="{{autoplay}}" class="banner" duration="{{duration}}" indicatorActiveColor="{{theme.color}}" indicatorColor="#ffffff" indicatorDots="{{indicatorDots}}" interval="{{interval}}" wx:if="{{banner}}">
+        <swiper-item wx:for="{{banner}}" wx:key="idx">
+            <image bindtap="link" class="slide-image" data-link="{{item['link']}}" height="150" src="{{item.bimg}}" width="355"></image>
+        </swiper-item>
+    </swiper>
+    <view class="announcement" style="color:{{theme.color}};" wx:if="{{ad}}">
+        <image mode="widthFix" src="{{theme.icon[0]}}"></image>
+        <view class="box">
+            <view>
+                <text wx:for="{{ad}}" wx:key="idx">{{item}}</text>
+            </view>
+        </view>
+    </view>
+    <view class="nav" wx:if="{{nav}}">
+        <block wx:for="{{nav}}" wx:for-index="idx" wx:key="idx">
+            <navigator class="item" url="{{item.link}}?&title={{item.name}}" wx:if="{{item.app==-1}}">
+                <image src="{{item.simg}}"></image>
+                <view>{{item.name}}</view>
+            </navigator>
+            <navigator appId="{{item.link[0]}}" class="item" path="{{item.link[1]}}" target="miniProgram" wx:if="{{item.app==1}}">
+                <image src="{{item.simg}}"></image>
+                <view>{{item.name}}</view>
+            </navigator>
+        </block>
+    </view>
+    <view class="nav2" wx:if="{{config.nav_status!=1}}">
+        <navigator class="item" url="../service/list?curr=1">
+            <image src="{{config.g_class?config.g_class:'../../resource/nav01.jpg'}}"></image>
+        </navigator>
+        <navigator class="item" url="../service/list?curr=2">
+            <image src="{{config.x_class?config.x_class:'../../resource/nav02.jpg'}}"></image>
+        </navigator>
+    </view>
+    <view class="list" wx:if="{{list}}">
+        <view class="title">
+            <view class="line"></view>
+            <view class="text">热门课程</view>
+        </view>
+        <navigator class="item" url="../service/detail?&id={{item.id}}" wx:for="{{list}}" wx:for-index="idx" wx:key="idx">
+            <image src="{{item.bimg}}"></image>
+            <view class="info">
+                <view class="info_t">{{item.name}}</view>
+                <view class="info_b">
+                    <view>
+                        <text wx:if="{{config.ke_status==1}}">学期:{{item.xueqi}} 课时:{{item.keshi}}</text>
+                    </view>
+                    <view wx:if="{{system_mobile==1&&config.pay_ios==1}}">请在安卓上购买</view>
+                    <view wx:else>{{item.price?'¥'+item.price:'免费'}}</view>
+                </view>
+            </view>
+        </navigator>
+    </view>
+    <view class="list" wx:if="{{mall}}">
+        <view class="title">
+            <view class="line"></view>
+            <view class="text">热门商品</view>
+        </view>
+        <view class="list2 clearfix">
+            <navigator class="listBox fl" style="background-color:#fff" url="../mall/detail?&id={{item.id}}" wx:for="{{mall}}" wx:key="unique">
+                <view class="imgBlock">
+                    <image mode="aspectFill" src="{{item.simg}}"></image>
+                </view>
+                <view class="h1">{{item.name}}</view>
+                <view class="p flex-display flex-alignC">
+                    <view>已售：
+              <text class="sp1" style="color:{{theme.color}};">{{item.sold}}</text>
+                    </view>
+                </view>
+                <view class="info flex-display flex-alignC">
+                    <view class="flex-flex1" style="color:{{theme.color}};" wx:if="{{system_mobile==1&&config.pay_ios==1}}">请在安卓上购买</view>
+                    <view class="flex-flex1" style="color:{{theme.color}};" wx:else>￥{{item.price}}</view>
+                    <view class="btn" style="background-color:{{theme.color}};" wx:if="{{system_mobile!=1||config.pay_ios!=1}}">购买</view>
+                </view>
+            </navigator>
+        </view>
+    </view>
+    <view class="copyright" wx:if="{{config.copyright}}">{{config.copyright}}</view>
+    <ad binderror="error" bindload="adLoad" unitId="{{config.unit_id}}" wx:if="{{ad_show&&config.ad_status==1}}"></ad>
+    <view bindtap="link" class="ad" data-link="{{open_list.content.link}}" wx:if="{{open_ad}}">
+        <image mode="widthFix" src="{{open_list.content.bimg}}"></image>
+    </view>
+    <image bindtap="to_shop" class="manage" src="../../resource/manage.png" wx:if="{{config.store_status==1}}"></image>
+    <template is="footer" data="{{footer:footer,footerCurr:footerCurr,theme:theme,config:config,shadow:shadow,get_userinfo:get_userinfo}}"></template>
+</view>

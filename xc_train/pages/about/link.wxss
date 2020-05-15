@@ -1,0 +1,9 @@
+@import "../../../wxParse/wxParse.wxss";
+
+.content {
+    width: 100%;
+}
+
+image {
+    display: inline-block;
+}
